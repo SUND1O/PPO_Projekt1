@@ -1,8 +1,22 @@
 import java.util.Scanner;
 
+//najprawdopodobniej nie będzie tworzenia wizualnej reprezentacji, bo jest zbyt autystyczna
+
 public class Main {
 
     public static void main(String[] args) {
+
+        /*
+        MyFrame test = new MyFrame();
+        GraphTest test = new GraphTest();
+        JFrame jf = new JFrame();
+        jf.setTitle("help");
+        jf.setSize(600,400);
+        jf.setVisible(true);
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jf.add(test);
+        */
+/*
         //sprawdzenie, czy enumaracja jest dostępna
         Pawn pionek = new Pawn("TestPawn");
         Log.info("State: " + pionek.getCurrentState());
@@ -11,9 +25,9 @@ public class Main {
 
         input.nextLine();
 
-        Board board = new Board(50,10);
+        BoardOld boardOld = new BoardOld(50,10);
         Dice dice = new Dice(12);
-        board.addDice(dice);
+        boardOld.addDice(dice);
 
         String name;
 
@@ -25,22 +39,30 @@ public class Main {
             if((i<3)&&(name==""))i--;
             if(name!=""){
                 Pawn pawn = new Pawn(name);
-                board.addPawn(pawn);
+                boardOld.addPawn(pawn);
             }
         }
 
         try
         {
-            board.verifyRequirements();
+            boardOld.verifyRequirements();
 
             while(true)
             {
-                board.performTurn();
+                boardOld.performTurn();
             }
         } catch(WinnerWasCalled exception)
         {
 
-            Log.info(board.getWinnerName() + " won.");
+            Log.info(boardOld.getWinnerName() + " won.");
         }
+*/
+        //new shit
+
+
+
+
+
+
     }
 }

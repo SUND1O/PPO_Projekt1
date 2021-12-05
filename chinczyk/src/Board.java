@@ -1,100 +1,71 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
-class Board {
-
-    private int maxPosition = 100, maxTurns = 100;
-
+public class Board {
+    private ArrayList<Controller> playerList;
     private ArrayList<Pawn> pawns;
-    private Dice dice = null;
-    private Pawn winner = null;
+    private Dice dice = new Dice(); //tworzenie kostki z zewnątrz bez sensu z powodu braku modyfikowania
 
-    private int turnsCounter = 0;
-
-    public String getWinnerName(){
-        if (this.winner == null) return "Nobody";
-        else return this.winner.getName();
-    }
-    public void addDice(Dice dice){
-        this.dice = dice;
-    }
-
-    public Board(int maxPosition, int maxTurns) {
-        this.pawns = new ArrayList<Pawn>();
-
-        if
-        ((maxPosition >= 20)
-                &&
-                (maxPosition <= 600))
-            this.maxPosition = maxPosition;
-
-        else System.out.println
-                (
-                        "max_position available range is 20-600!" +
-                                "\nmax_position set to: " + this.maxPosition
-                );
-
-        if
-        ((maxTurns >= 1)
-                &&
-                (maxTurns <= 300))
-            this.maxTurns = maxTurns;
-
-        else System.out.println
-                (
-                        "max_turns available range is 1-300!" +
-                                "\nmax_turns set to: "+this.maxTurns
-                );
-    }
-
-    public Board() {
-        this.pawns = new ArrayList<Pawn>();
-        this.dice = null;
-        this.winner = null;
-        this.turnsCounter = 0;
-    }
-    public void verifyRequirements() throws WinnerWasCalled {
-        if(pawns.isEmpty()) {
-            Log.info("Cannot start game without Pawns!");
-            throw new WinnerWasCalled();
-        }
-        if(dice==null) {
-            Log.info("Cannot start game without Dice!");
-            throw new WinnerWasCalled();
-        }
-    }
     public void addPawn(Pawn pawn) {
         this.pawns.add(pawn);
     }
 
+    public int currentLoopTurn = 0;
 
-    public void performTurn() throws WinnerWasCalled {
+    public void nextTurn(){
+        switch(currentLoopTurn){
+            case 0: Log.info("Red team's turn.");break;
+            case 1: Log.info("Blue team's turn.");break;
+            case 2: Log.info("Green team's turn.");break;
+            case 3: Log.info("Yellow team's turn.");break;
+            default:Log.info("No team's turn");break;
+        }
+        currentLoopTurn++;
 
-        this.turnsCounter++;
+        //wraca się z drużyny żółtej do czerwonej
+        if(currentLoopTurn > 3) currentLoopTurn -= 4;
+    }
 
-        Log.info("Turn " + this.turnsCounter);
 
-        for(Pawn pawn : this.pawns) {
-            int rollResult = this.dice.roll();
-            pawn.move(rollResult);
-            Log.info(pawn.getName() + " new position: " + pawn.getPosition());
+    public void verifyRequirements() throws FailedRequirements {
+        if(pawns.isEmpty()) {
+            Log.info("Cannot start game without Pawns!");
+            throw new FailedRequirements();
+        }
+        if(dice==null) {
+            Log.info("Cannot start game without Dice!");
+            throw new FailedRequirements();
+        }
+    }
 
-            if(pawn.getPosition() >= this.maxPosition) {
-                this.winner = pawn;
-                throw new WinnerWasCalled();
+
+
+    public Board(){
+        //dodanie 4 losowych kontrolerów do planszy
+        //można zmienić na dodanie 3 specyficznych i 1 gracza
+        /*
+        for (int i = 0; i < 4; i++) {
+            playerList.add(new Controller("player: " + i, i,this ));
+        }
+        */
+        playerList.add(new Controller("Player", 0,this ));
+        playerList.add(new NPC_Random("Randy Random", 1,this ));
+        playerList.add(new NPC_Random("Randy Random", 2,this ));
+        playerList.add(new NPC_Random("Randy Random", 3,this ));
+
+
+
+
+        //dodanie pionków do kontrolera
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++){
+                playerList.get(i).AddControllablePawn(new Pawn(i,j));
+
             }
         }
 
-        if(turnsCounter >= maxTurns) {
-            Log.info("\nOut of turns");
 
-            int highScore = 0;
-            for(Pawn pawn : this.pawns) {
-                if(pawn.getPosition()>highScore) {
-                    highScore = pawn.getPosition();
-                    this.winner = pawn;
-                }
-            }
-            throw new WinnerWasCalled();
-        }
+
     }
 }

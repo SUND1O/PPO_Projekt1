@@ -4,5 +4,5 @@ class Log
         System.out.println(message);
     }
 }
-class WinnerWasCalled extends Exception {
-}
+class WinnerWasCalled extends Exception {}
+class FailedRequirements extends Exception{}

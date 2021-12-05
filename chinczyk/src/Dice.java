@@ -10,14 +10,4 @@ class Dice {
         return result;
     }
     public Dice (){};
-    public Dice (int sides){
-
-        if((sides>=2)&&(sides<=20))this.sides=sides;
-        else System.out.println
-                (
-                        "Dice side count available range is 2-20!" +
-                                "\nSide count set to: "+this.sides
-                );
-    }
-
 }
